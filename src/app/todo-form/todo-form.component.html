@@ -1,0 +1,35 @@
+<form action="#">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <td>ID</td>
+      <td>Название</td>
+      <td>Описание</td>
+      <td>Важность</td>
+      <td>Дата создания</td>
+      <td>Деадлайн</td>
+      <td>Дата завершения</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><input type="number" class="form-control" name="id" [(ngModel)]="todoService.todo.id" readonly disabled /></td>
+      <td><input type="text" class="form-control" name="name" [(ngModel)]="todoService.todo.name" /></td>
+      <td><input type="text" class="form-control" name="description" [(ngModel)]="todoService.todo.description" /></td>
+      <td>
+        <select class="form-control" name="importance" [(ngModel)]="todoService.todo.importance">
+          <option  *ngFor="let imp of importance" [value]="imp">
+            {{imp}}
+          </option>
+        </select>
+      </td>
+      <td><input type="date" class="form-control" name="createdDate" [placeholder]="todoService.todo.createdDate" [(ngModel)]="todoService.todo.createdDate" /></td>
+      <td><input type="date" class="form-control" name="deadlineDate" [(ngModel)]="todoService.todo.deadlineDate" /></td>
+      <td><input type="date" class="form-control" name="completedDate" [(ngModel)]="todoService.todo.completedDate" /></td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="form-group">
+    <button class="btn btn-success" (click)="addTodo()">Добавить</button>
+  </div>
+</form>

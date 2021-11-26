@@ -1,0 +1,47 @@
+<h3>Список дел</h3>
+
+<button class="btn btn-primary" (click)="filterTodos('')">Все</button>
+&nbsp;
+<button class="btn btn-primary" (click)="filterTodos('usual')">Usual</button>
+&nbsp;
+<button class="btn btn-primary" (click)="filterTodos('important')">Important</button>
+&nbsp;
+<button class="btn btn-primary" (click)="filterTodos('veryImportant')">VeryImportant</button>
+<div>&nbsp;</div>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <td>Выбранные</td>
+    <td>ID</td>
+    <td>Название</td>
+    <td>Описание</td>
+    <td>Готовность</td>
+    <td>Важность</td>
+    <td>Дата создания</td>
+    <td>Деадлайн</td>
+    <td>Дата завершения</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let todo of todoService.todos" [ngClass]="{fail: todoService.todo.failured}">
+    <td><input type="checkbox" class="form-control" name="selected" [(ngModel)]="todo.selected" (change)="changedSelected()"></td>
+    <td>{{todo.id}}</td>
+    <td>
+      <del *ngIf="todo.completed"><span>{{todo.name}}</span></del>
+      <span *ngIf="!todo.completed">{{todo.name}}</span>
+    </td>
+    <td>{{todo.description}}</td>
+    <td><input type="checkbox" class="form-control" name="completed" [(ngModel)]="todo.completed" (change)="changedCompleted()" /></td>
+    <td>{{todo.importance}}</td>
+    <td>{{todo.createdDate | date: 'yyyy-dd-MM'}}</td>
+    <td><span *ngIf="todo.deadlineDate">{{todo.deadlineDate | date: 'yyyy-dd-MM'}}</span></td>
+    <td><span *ngIf="todo.completedDate">{{todo.completedDate | date: 'yyyy-dd-MM'}}</span></td>
+    <td>
+      <button class="btn btn-warning" (click)="goTo(todo.id)">Изменить</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div class="form-group">
+  <button class="btn btn-danger" (click)="deleteTodo()">Удалить</button>
+</div>
