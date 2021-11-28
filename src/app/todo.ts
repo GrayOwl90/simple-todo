@@ -6,6 +6,7 @@ export class Todo {
     public completed: boolean,
     public selected: boolean,
     public importance: 'usual' | 'important' | 'veryImportant',
+    public failured: boolean,
     public createdDate: string,
     public deadlineDate?: string,
     public completedDate?: string){}

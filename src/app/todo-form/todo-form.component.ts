@@ -16,11 +16,23 @@ export class TodoFormComponent implements OnInit {
   }
   addTodo(){
     this.todoService.todo.id++;
-    this.todoService.todos.push(new Todo(this.todoService.todo.id, this.todoService.todo.name,
-      this.todoService.todo.description, this.todoService.todo.completed,
-      this.todoService.todo.selected, this.todoService.todo.importance,
-      this.todoService.todo.failured, this.todoService.takeThisDay(),
-      this.todoService.todo.deadlineDate, this.todoService.todo.completedDate));
+    this.todoService.todos.push(new Todo(
+      this.todoService.todo.id,
+      this.todoService.todo.name,
+      this.todoService.todo.description,
+      this.todoService.todo.completed,
+      this.todoService.todo.selected,
+      this.todoService.todo.importance,
+      this.todoService.todo.failured,
+      this.todoService.takeThisDay(),
+      this.todoService.todo.deadlineDate,
+      this.todoService.todo.completedDate
+    ));
     this.todoService.saveStorage();
+    this.todoService.todo.name = '';
+    this.todoService.todo.description = '';
+    this.todoService.todo.importance = 'usual';
+    this.todoService.todo.deadlineDate = '';
+    this.todoService.todo.completedDate = '';
   }
 }

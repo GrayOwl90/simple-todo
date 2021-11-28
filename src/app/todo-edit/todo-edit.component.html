@@ -13,24 +13,38 @@
     </thead>
     <tbody>
     <tr>
-      <td><input type="number" class="form-control" name="id" [(ngModel)]="todoService.todo.id" readonly disabled /></td>
-      <td><input type="text" class="form-control" name="name" [(ngModel)]="todoService.todo.name" value="{{todoService.todo.name}}" /></td>
-      <td><input type="text" class="form-control" name="description" [(ngModel)]="todoService.todo.description" value="{{todoService.todo.description}}" /></td>
+      <td>{{editedTodo.id}}</td>
       <td>
-        <select class="form-control" name="importance" [(ngModel)]="todoService.todo.importance">
+        <del *ngIf="editedTodo.completed"><span>{{editedTodo.name}}</span></del>
+        <span *ngIf="!editedTodo.completed">{{editedTodo.name}}</span>
+      </td>
+      <td>{{editedTodo.description}}</td>
+      <td>{{editedTodo.importance}}</td>
+      <td>{{editedTodo.createdDate | date: 'yyyy-dd-MM'}}</td>
+      <td><span *ngIf="editedTodo.deadlineDate">{{editedTodo.deadlineDate | date: 'yyyy-dd-MM'}}</span></td>
+      <td><span *ngIf="editedTodo.completedDate">{{editedTodo.completedDate | date: 'yyyy-dd-MM'}}</span></td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td><input type="number" class="form-control" name="id" [(ngModel)]="editedTodo.id" readonly disabled /></td>
+      <td><input type="text" class="form-control" name="name" [(ngModel)]="editedTodo.name" /></td>
+      <td><input type="text" class="form-control" name="description" [(ngModel)]="editedTodo.description" /></td>
+      <td>
+        <select class="form-control" name="importance" [(ngModel)]="editedTodo.importance">
           <option  *ngFor="let imp of importance" [value]="imp">
             {{imp}}
           </option>
         </select>
       </td>
-      <td><input type="date" class="form-control" name="createdDate" [placeholder]="todoService.todo.createdDate" [(ngModel)]="this.todoService.todo.createdDate" /></td>
-      <td><input type="date" class="form-control" name="deadlineDate" [(ngModel)]="todoService.todo.deadlineDate" /></td>
-      <td><input type="date" class="form-control" name="completedDate" [(ngModel)]="todoService.todo.completedDate" /></td>
+      <td><input type="date" class="form-control" name="createdDate" [(ngModel)]="editedTodo.createdDate" readonly /></td>
+      <td><input type="date" class="form-control" name="deadlineDate" [(ngModel)]="editedTodo.deadlineDate" /></td>
+      <td><input type="date" class="form-control" name="completedDate" [(ngModel)]="editedTodo.completedDate" /></td>
     </tr>
     </tbody>
   </table>
   <div class="form-group">
-    <button class="btn btn-success">Сохранить изменения</button>
+    <button class="btn btn-success" (click)="saveTodo(editedTodo)">Сохранить изменения</button>
   </div>
 </form>
 

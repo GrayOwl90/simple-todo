@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {TodoService} from "../todo.service";
 
@@ -9,7 +9,9 @@ import {TodoService} from "../todo.service";
 })
 export class TodoListComponent implements OnInit {
 
-  constructor(private router: Router, public todoService: TodoService) { }
+  public filterTodos: string = '';
+
+  constructor(private router: Router, public todoService: TodoService) {}
 
   ngOnInit(): void {
 
@@ -18,60 +20,33 @@ export class TodoListComponent implements OnInit {
       this.todoService.loadStorage();
     });
 
-    if(this.todoService.todo.completedDate !== null) {
-      this.todoService.todo.completed = true;
-      this.todoService.saveStorage();
-    }
+    this.todoService.todos.filter((todo) => todo.completedDate !== '' ? todo.completed = true : todo.completed = false);
 
-    if (this.todoService.todo.deadlineDate !== null && this.todoService.todo.completedDate !== null) {
-      this.todoService.todos.filter((todo) =>
-        Number(this.todoService.todo.deadlineDate) - Number(this.todoService.todo.completedDate) < 0 ?
-        this.todoService.todo.failured = true : this.todoService.todo.failured = false);
-    }
-    console.log(this.todoService.todos);
+    this.todoService.todos.filter(function callback(todo) {
+      if (todo.deadlineDate !== '' && todo.completedDate !== '') {
+        let date1:any = todo.deadlineDate;
+        let date2:any = todo.completedDate;
+        date1 = date1.split('-').join('');
+        date2 = date2.split('-').join('');
+        Number(date1) - Number(date2) < 0 ? todo.failured = true : todo.failured = false;
+      }
+    });
   }
 
-  goTo(id:number) {
-    this.router.navigate(['/item', id])
+  goTo(todo:any) {
+    this.router.navigate(
+      ['/item', todo.id]
+    )
   }
 
   changedCompleted() {
-    if (this.todoService.todo.completed == false) {
-      this.todoService.todo.completed = true;
-    } else {
-      this.todoService.todo.completed = false;
-    }
+    this.todoService.todo.completed = !this.todoService.todo.completed;
     this.todoService.saveStorage();
   }
 
   changedSelected() {
-    if (this.todoService.todo.selected == false) {
-      this.todoService.todo.selected = true;
-    } else {
-      this.todoService.todo.selected = false;
-    }
+    this.todoService.todo.selected = !this.todoService.todo.selected;
     this.todoService.todo.selected = false;
-  }
-
-  filterTodos(selectImportance:any) {
-    this.todoService.todos = JSON.parse(localStorage.getItem('store') as string);
-    switch(selectImportance) {
-      case 'usual':
-        let uTodos = this.todoService.todos.filter((todo) => todo.importance == selectImportance);
-        this.todoService.todos = uTodos;
-        break;
-      case 'important':
-        let iTodos = this.todoService.todos.filter((todo) => todo.importance == selectImportance);
-        this.todoService.todos = iTodos;
-        break;
-      case 'veryImportant':
-        let viTodos = this.todoService.todos.filter((todo) => todo.importance == selectImportance);
-        this.todoService.todos = viTodos;
-        break;
-      default:
-        let allTodos = this.todoService.todos.filter((todo)=> todo.importance == 'usual' || 'important' || 'veryImportant');
-        this.todoService.todos = allTodos;
-    }
   }
 
   deleteTodo() {

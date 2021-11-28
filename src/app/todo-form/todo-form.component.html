@@ -2,7 +2,6 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <td>ID</td>
       <td>Название</td>
       <td>Описание</td>
       <td>Важность</td>
@@ -13,7 +12,6 @@
     </thead>
     <tbody>
     <tr>
-      <td><input type="number" class="form-control" name="id" [(ngModel)]="todoService.todo.id" readonly disabled /></td>
       <td><input type="text" class="form-control" name="name" [(ngModel)]="todoService.todo.name" /></td>
       <td><input type="text" class="form-control" name="description" [(ngModel)]="todoService.todo.description" /></td>
       <td>
@@ -23,7 +21,7 @@
           </option>
         </select>
       </td>
-      <td><input type="date" class="form-control" name="createdDate" [placeholder]="todoService.todo.createdDate" [(ngModel)]="todoService.todo.createdDate" /></td>
+      <td><input type="date" class="form-control" name="createdDate" [(ngModel)]="todoService.todo.createdDate" readonly /></td>
       <td><input type="date" class="form-control" name="deadlineDate" [(ngModel)]="todoService.todo.deadlineDate" /></td>
       <td><input type="date" class="form-control" name="completedDate" [(ngModel)]="todoService.todo.completedDate" /></td>
     </tr>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TodoService} from "../todo.service";
 import {Subscription} from "rxjs";
+import {Todo} from "../todo";
 
 @Component({
   selector: 'app-todo-edit',
@@ -10,24 +11,35 @@ import {Subscription} from "rxjs";
 })
 export class TodoEditComponent implements OnInit {
 
-  id: number | undefined;
+  public editedTodo: Todo | any = new Todo(0, "", "", false, false, "usual", false, '', '', '');
+
   private subscription: Subscription;
   importance: string[] = ["usual", "important", "veryImportant"];
 
   constructor(private activateRoute: ActivatedRoute, public todoService: TodoService){
 
-    this.subscription = activateRoute.params.subscribe(params => this.id = params['id']);
+    this.subscription = activateRoute.params.subscribe(params => {
+      this.todoService.todo.id = +params['id']
+    });
 
   }
 
   ngOnInit(): void {
-    //console.log('todo id', this.todoService.todo.id);
 
+    const currentId = this.todoService.todo.id;
 
+    if(localStorage.getItem('store')) {
+      this.todoService.todos = JSON.parse(localStorage.getItem('store') as string);
+    }
+
+    this.editedTodo = this.todoService.todos.find((todo) => todo.id == currentId);
+
+    //console.log("editedTodo", this.editedTodo);
   }
 
-  // editTodo(id:number){
-  //   const idx = this.todos.findIndex(t => t.id == id);
-  //   this.todos[idx] = this.todo
-  // }
+  saveTodo(todo: Todo){
+
+    this.todoService.saveStorage();
+
+  }
 }
