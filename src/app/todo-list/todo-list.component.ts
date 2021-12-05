@@ -1,47 +1,49 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {TodoService} from "../todo.service";
+import {StorageService} from "../storage.service";
 
 @Component({
   selector: 'app-todo-list',
-  templateUrl: './todo-list.component.html',
-  styleUrls: ['../app.component.css']
+  templateUrl: './todo-list.component.html'
 })
 export class TodoListComponent implements OnInit {
 
   public filterTodos: string = '';
+  statusMessage: string = "";
 
-  constructor(private router: Router, public todoService: TodoService) {}
+  constructor(private router: Router, public todoService: TodoService, public storageService: StorageService) {}
 
   ngOnInit(): void {
 
-    this.todoService.loadStorage();
+
+
+    this.storageService.loadStorage();
     window.addEventListener('storage', () => {
-      this.todoService.loadStorage();
+      this.storageService.loadStorage();
     });
 
-    this.todoService.todos.filter((todo) => todo.completedDate !== '' ? todo.completed = true : todo.completed = false);
+    this.todoService.checkCompleted();
 
-    this.todoService.todos.filter(function callback(todo) {
-      if (todo.deadlineDate !== '' && todo.completedDate !== '') {
-        let date1:any = todo.deadlineDate;
-        let date2:any = todo.completedDate;
-        date1 = date1.split('-').join('');
-        date2 = date2.split('-').join('');
-        Number(date1) - Number(date2) < 0 ? todo.failured = true : todo.failured = false;
-      }
-    });
+    //this.todoService.todos.filter((todo) => todo.completedDate !== '' ? todo.completed = true : todo.completed = false);
+
   }
 
   goTo(todo:any) {
-    this.router.navigate(
-      ['/item', todo.id]
-    )
+    //if(!todo.id) {
+      this.router.navigate(
+        ['/item', todo.id]
+      )
+    // } else {
+    //   this.router.navigate(['/']);
+    //   alert('Такой таски не существует!');
+    // }
+
   }
 
   changedCompleted() {
     this.todoService.todo.completed = !this.todoService.todo.completed;
-    this.todoService.saveStorage();
+    this.storageService.saveStorage();
   }
 
   changedSelected() {
@@ -51,7 +53,8 @@ export class TodoListComponent implements OnInit {
 
   deleteTodo() {
     this.todoService.todos = this.todoService.todos.filter((todo) => !todo.selected);
-    this.todoService.saveStorage();
+    this.storageService.saveStorage();
+    this.statusMessage = 'Данные успешно удалены';
   }
 
 }

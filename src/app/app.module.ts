@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {FormsModule} from "@angular/forms";
 import {Routes, RouterModule} from "@angular/router";
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { TodoFormComponent } from './todo-form/todo-form.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
@@ -26,7 +27,10 @@ const appRoutes: Routes =[
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    NgxDaterangepickerMd.forRoot({
+      displayFormat: 'YYYY-MM-DD'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

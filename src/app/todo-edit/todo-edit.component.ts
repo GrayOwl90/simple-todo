@@ -3,20 +3,23 @@ import {ActivatedRoute} from '@angular/router';
 import {TodoService} from "../todo.service";
 import {Subscription} from "rxjs";
 import {Todo} from "../todo";
+import {StorageService} from "../storage.service";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-todo-edit',
-  templateUrl: './todo-edit.component.html',
-  styleUrls: ['../app.component.css']
+  templateUrl: './todo-edit.component.html'
 })
-export class TodoEditComponent implements OnInit {
 
-  public editedTodo: Todo | any = new Todo(0, "", "", false, false, "usual", false, '', '', '');
+export class TodoEditComponent {
 
-  private subscription: Subscription;
+  public editedTodo: Todo | any = new Todo(0, "", "", false, false, "usual", false, '', {startDate: moment(), endDate: moment()}, {startDate: moment(), endDate: moment()});
+
+  subscription: Subscription;
   importance: string[] = ["usual", "important", "veryImportant"];
+  statusMessage: string = "";
 
-  constructor(private activateRoute: ActivatedRoute, public todoService: TodoService){
+  constructor(private activateRoute: ActivatedRoute, public todoService: TodoService, public storageService: StorageService){
 
     this.subscription = activateRoute.params.subscribe(params => {
       this.todoService.todo.id = +params['id']
@@ -37,9 +40,14 @@ export class TodoEditComponent implements OnInit {
     //console.log("editedTodo", this.editedTodo);
   }
 
-  saveTodo(todo: Todo){
+  saveTodo(){
+    this.storageService.saveStorage();
+    this.statusMessage = 'Данные успешно обновлены';
+  }
 
-    this.todoService.saveStorage();
-
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

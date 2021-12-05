@@ -1,40 +1,46 @@
-import {Injectable, Output} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Todo} from "./todo";
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
 
-  public todo: Todo = new Todo(0, "", "", false, false, "usual", false, this.takeThisDay(), '', '');
-  @Output() public todos: Todo[] = [];
+  public todo: Todo = new Todo(0, "", "", false, false, "usual", false, this.takeThisDay(), null, null);
+  public todos: Todo[] = [];
+
 
   ngOnInit() {
 
-    this.loadStorage();
-    window.addEventListener('storage', () => {
-      this.loadStorage();
+
+
+    this.todos.filter(function callback(todo) {
+      // if (todo.deadlineDate !== '' && todo.completedDate !== '') {
+      //   // let date1 = moment(todo.deadlineDate);
+      //   // let date2 = moment(todo.completedDate);
+      //   // let duration = moment.duration(date1.diff(date2));
+      //   // console.log(duration, 'days');
+      //   // date1 = date1.split('-').join('');
+      //   // date2 = date2.split('-').join('');
+      //   // Number(date1) - Number(date2) < 0 ? todo.failured = true : todo.failured = false;
+      // }
     });
+
+  }
+
+  // takeTodo(id:number) {
+  //   if ()
+  // }
+
+  checkCompleted() {
+    this.todos.filter((todo) => todo.completedDate ? todo.completed = true : todo.completed = false);
+    console.log('1', this.todos);
   }
 
   takeThisDay(){
-    let myDate = new Date();
-    let Month = myDate.getMonth();
-    if (Month > 0) {
-      Month = Month + 1;
-    }
-    return `${myDate.getFullYear()}-${Month}-${myDate.getDate()}`;
-  }
-
-  loadStorage() {
-    if(localStorage.getItem('store')) {
-      this.todos = JSON.parse(localStorage.getItem('store') as string);
-      this.todo.id = Number(this.todos[this.todos.length - 1].id);
-    }
-  }
-
-  saveStorage() {
-    localStorage.setItem('store', JSON.stringify(this.todos));
+    let myDate: string = moment().format('YYYY-MM-DD');
+    return myDate;
   }
 
 }

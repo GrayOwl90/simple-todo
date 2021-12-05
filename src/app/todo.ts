@@ -1,3 +1,8 @@
+// interface IDatePicker {
+//   startDate: any,
+//   endDate: any
+// }
+
 export class Todo {
   constructor(
     public id: number,
@@ -8,6 +13,6 @@ export class Todo {
     public importance: 'usual' | 'important' | 'veryImportant',
     public failured: boolean,
     public createdDate: string,
-    public deadlineDate?: string,
-    public completedDate?: string){}
+    public deadlineDate?: any,
+    public completedDate?: any){}
 }

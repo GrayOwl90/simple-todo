@@ -12,22 +12,38 @@
     </thead>
     <tbody>
     <tr>
-      <td><input type="text" class="form-control" name="name" [(ngModel)]="todoService.todo.name" /></td>
-      <td><input type="text" class="form-control" name="description" [(ngModel)]="todoService.todo.description" /></td>
+      <td><input type="text" class="form-control" name="name"
+                 [(ngModel)]="todoService.todo.name" /></td>
+      <td><input type="text" class="form-control" name="description"
+                 [(ngModel)]="todoService.todo.description" /></td>
       <td>
-        <select class="form-control" name="importance" [(ngModel)]="todoService.todo.importance">
+        <select class="form-control" name="importance"
+                [(ngModel)]="todoService.todo.importance">
           <option  *ngFor="let imp of importance" [value]="imp">
             {{imp}}
           </option>
         </select>
       </td>
-      <td><input type="date" class="form-control" name="createdDate" [(ngModel)]="todoService.todo.createdDate" readonly /></td>
-      <td><input type="date" class="form-control" name="deadlineDate" [(ngModel)]="todoService.todo.deadlineDate" /></td>
-      <td><input type="date" class="form-control" name="completedDate" [(ngModel)]="todoService.todo.completedDate" /></td>
+      <td><input type="text" class="form-control" name="createdDate"
+                 [(ngModel)]="todoService.todo.createdDate"
+                 disabled /></td>
+      <td><input type="text" class="form-control" name="deadlineDate"
+                 ngxDaterangepickerMd
+                 [singleDatePicker]="true"
+                 [autoApply]="true"
+                 [(ngModel)]="todoService.todo.deadlineDate" /></td>
+      <td><input type="text" class="form-control" name="completedDate"
+                 ngxDaterangepickerMd
+                 [singleDatePicker]="true"
+                 [autoApply]="true"
+                 [(ngModel)]="todoService.todo.completedDate" /></td>
     </tr>
     </tbody>
   </table>
   <div class="form-group">
-    <button class="btn btn-success" (click)="addTodo()">Добавить</button>
+    <button class="btn btn-success"
+            (click)="addTodo()"
+            [disabled]="!this.todoService.todo.name || !this.todoService.todo.description">Добавить</button>
   </div>
 </form>
+<div>{{statusMessage}}</div>

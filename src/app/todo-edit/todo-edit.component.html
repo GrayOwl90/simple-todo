@@ -20,9 +20,9 @@
       </td>
       <td>{{editedTodo.description}}</td>
       <td>{{editedTodo.importance}}</td>
-      <td>{{editedTodo.createdDate | date: 'yyyy-dd-MM'}}</td>
-      <td><span *ngIf="editedTodo.deadlineDate">{{editedTodo.deadlineDate | date: 'yyyy-dd-MM'}}</span></td>
-      <td><span *ngIf="editedTodo.completedDate">{{editedTodo.completedDate | date: 'yyyy-dd-MM'}}</span></td>
+      <td>{{editedTodo.createdDate}}</td>
+      <td><span *ngIf="editedTodo.deadlineDate">{{editedTodo.deadlineDate}}</span></td>
+      <td><span *ngIf="editedTodo.completedDate">{{editedTodo.completedDate}}</span></td>
       <td>
       </td>
     </tr>
@@ -37,14 +37,15 @@
           </option>
         </select>
       </td>
-      <td><input type="date" class="form-control" name="createdDate" [(ngModel)]="editedTodo.createdDate" readonly /></td>
-      <td><input type="date" class="form-control" name="deadlineDate" [(ngModel)]="editedTodo.deadlineDate" /></td>
-      <td><input type="date" class="form-control" name="completedDate" [(ngModel)]="editedTodo.completedDate" /></td>
+      <td><input type="text" class="form-control" name="createdDate" [(ngModel)]="editedTodo.createdDate" disabled /></td>
+      <td><input type="text" class="form-control" name="deadlineDate" ngxDaterangepickerMd [singleDatePicker]="true" [autoApply]="true" [(ngModel)]="editedTodo.deadlineDate" /></td>
+      <td><input type="text" class="form-control" name="completedDate" ngxDaterangepickerMd [singleDatePicker]="true" [autoApply]="true" [(ngModel)]="editedTodo.completedDate" /></td>
     </tr>
     </tbody>
   </table>
   <div class="form-group">
-    <button class="btn btn-success" (click)="saveTodo(editedTodo)">Сохранить изменения</button>
+    <button class="btn btn-success" (click)="saveTodo()">Сохранить изменения</button> <!--{{id?'Сохранить изменения':'Создать задачу')}}-->
   </div>
 </form>
+<div>{{statusMessage}}</div>
 
