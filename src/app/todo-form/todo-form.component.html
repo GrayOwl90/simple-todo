@@ -1,7 +1,9 @@
-<form action="#">
+<h3 class="offset-3" *ngIf="!tades">This ID does not exist!</h3>
+<form *ngIf="tades" action="#">
   <table class="table table-striped">
     <thead>
     <tr>
+      <td *ngIf="tades.id !== 0">ID</td>
       <td>Название</td>
       <td>Описание</td>
       <td>Важность</td>
@@ -12,38 +14,56 @@
     </thead>
     <tbody>
     <tr>
-      <td><input type="text" class="form-control" name="name"
-                 [(ngModel)]="todoService.todo.name" /></td>
-      <td><input type="text" class="form-control" name="description"
-                 [(ngModel)]="todoService.todo.description" /></td>
+      <td *ngIf="tades.id !== 0"><input type="number"
+                 class="form-control"
+                 name="id"
+                 [(ngModel)]="tades.id"
+                 readonly disabled /></td>
+      <td><input type="text"
+                 class="form-control"
+                 name="name"
+                 [(ngModel)]="tades.name" /></td>
+      <td><input type="text"
+                 class="form-control"
+                 name="description"
+                 [(ngModel)]="tades.description" /></td>
       <td>
-        <select class="form-control" name="importance"
-                [(ngModel)]="todoService.todo.importance">
+        <select class="form-control"
+                name="importance"
+                [(ngModel)]="tades.importance">
           <option  *ngFor="let imp of importance" [value]="imp">
             {{imp}}
           </option>
         </select>
       </td>
-      <td><input type="text" class="form-control" name="createdDate"
-                 [(ngModel)]="todoService.todo.createdDate"
+      <td><input type="text"
+                 class="form-control"
+                 name="createdDate"
+                 [(ngModel)]="tades.createdDate"
                  disabled /></td>
-      <td><input type="text" class="form-control" name="deadlineDate"
+      <td><input type="text"
+                 class="form-control"
+                 name="deadlineDate"
                  ngxDaterangepickerMd
                  [singleDatePicker]="true"
                  [autoApply]="true"
-                 [(ngModel)]="todoService.todo.deadlineDate" /></td>
-      <td><input type="text" class="form-control" name="completedDate"
+                 [(ngModel)]="tades.deadlineDate" /></td>
+      <td><input type="text"
+                 class="form-control"
+                 name="completedDate"
                  ngxDaterangepickerMd
                  [singleDatePicker]="true"
                  [autoApply]="true"
-                 [(ngModel)]="todoService.todo.completedDate" /></td>
+                 [(ngModel)]="tades.completedDate" /></td>
     </tr>
     </tbody>
   </table>
   <div class="form-group">
     <button class="btn btn-success"
-            (click)="addTodo()"
-            [disabled]="!this.todoService.todo.name || !this.todoService.todo.description">Добавить</button>
+            (click)="saveTodo(tades)"
+            [disabled]="!this.tades.name || !this.tades.description">
+      {{tades?.id !== 0 ? 'Сохранить изменения' : 'Добавить задачу'}}
+    </button>
   </div>
 </form>
 <div>{{statusMessage}}</div>

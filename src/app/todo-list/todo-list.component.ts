@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {TodoService} from "../todo.service";
 import {StorageService} from "../storage.service";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-todo-list',
@@ -15,34 +16,29 @@ export class TodoListComponent implements OnInit {
   constructor(private router: Router, public todoService: TodoService, public storageService: StorageService) {}
 
   ngOnInit(): void {
-
-
-
     this.storageService.loadStorage();
     window.addEventListener('storage', () => {
       this.storageService.loadStorage();
     });
-
     this.todoService.checkCompleted();
-
-    //this.todoService.todos.filter((todo) => todo.completedDate !== '' ? todo.completed = true : todo.completed = false);
-
+    this.todoService.checkFailured();
   }
+
+  // filterTodos(filter:string) {
+  //   if(filter = '') {
+  //     return this.todoService.todos;
+  //   }
+  //   return this.todoService.todos.filter(todo => {
+  //     return todo.importance.indexOf(filter) !== -1;
+  //   })
+  // }
 
   goTo(todo:any) {
-    //if(!todo.id) {
-      this.router.navigate(
-        ['/item', todo.id]
-      )
-    // } else {
-    //   this.router.navigate(['/']);
-    //   alert('Такой таски не существует!');
-    // }
-
+    this.router.navigate(['/item', todo.id]);
   }
 
-  changedCompleted() {
-    this.todoService.todo.completed = !this.todoService.todo.completed;
+  checkCompletedChange() {
+    this.todoService.changedCompleted();
     this.storageService.saveStorage();
   }
 

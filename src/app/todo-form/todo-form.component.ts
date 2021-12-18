@@ -1,45 +1,63 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from "rxjs";
 import {TodoService} from "../todo.service";
-import {Todo} from "../todo";
 import {StorageService} from "../storage.service";
 
 @Component({
   selector: 'app-todo-form',
   templateUrl: './todo-form.component.html'
 })
-export class TodoFormComponent implements OnInit {
+export class TodoFormComponent {
 
+  subscription: Subscription;
   importance: string[] = ["usual", "important", "veryImportant"];
   statusMessage: string = "";
+  tades:any = {};
 
-  constructor(public todoService: TodoService, public storageService: StorageService){
+  constructor(private activateRoute: ActivatedRoute, public todoService: TodoService, public storageService: StorageService){
+
+    this.subscription = this.activateRoute.params.subscribe(params => {
+      this.tades = params['id'] ? this.todoService.getTodo(+params['id']) : this.todoService.createTodo();
+    });
+
   }
-  //todo;
+
   ngOnInit(): void {
-    //this.todo = ('if new') ? new Todo(0, "", "", false, false, "usual", false, this.takeThisDay(), {startDate: null, endDate: null}, {startDate: null, endDate: null}) : this.todoService.todo
+    this.storageService.loadStorage();
+    window.addEventListener('storage', () => {
+      this.storageService.loadStorage();
+    });
   }
 
-  addTodo(){
-    this.todoService.todo.id++;
-    this.todoService.todos.push(new Todo(
-      this.todoService.todo.id,
-      this.todoService.todo.name,
-      this.todoService.todo.description,
-      this.todoService.todo.completed,
-      this.todoService.todo.selected,
-      this.todoService.todo.importance,
-      this.todoService.todo.failured,
-      this.todoService.takeThisDay(),
-      this.todoService.todo.deadlineDate?.startDate?.startOf('day').unix(),
-      this.todoService.todo.completedDate?.startDate?.startOf('day').unix()
-    ));
-    this.storageService.saveStorage();
-    this.todoService.todo.name = '';
-    this.todoService.todo.description = '';
-    this.todoService.todo.importance = 'usual';
-    this.todoService.todo.deadlineDate = null;
-    this.todoService.todo.completedDate = null;
+  saveTodo(tades:any) {
+    if (this.tades.id !== 0) {
+      tades.deadlineDate = tades.deadlineDate?.startDate?.startOf('day').unix();
+      tades.completedDate = tades.completedDate?.startDate?.startOf('day').unix();
+      this.todoService.todos = this.todoService.todos.map((todo) => todo.id == this.tades.id ? this.todoService.todo = this.tades : todo);
+      // console.log('todo', this.todoService.todo);
+      // console.log('tades', this.tades);
+      // console.log('todos', this.todoService.todos);
+      this.storageService.saveStorage();
+      this.statusMessage = 'Данные успешно обновлены';
+    } else {
+      if(localStorage.getItem('store')) {
+        this.todoService.todo.id = Number(this.todoService.todos[this.todoService.todos.length - 1].id);
+      }
+      this.todoService.addTodo(tades);
+      this.storageService.saveStorage();
+      this.statusMessage = 'Данные успешно добавлены';
+      this.tades.name = '';
+      this.tades.description = '';
+      this.tades.importance = 'usual';
+      this.tades.deadlineDate = null;
+      this.tades.completedDate = null;
+    }
+  }
 
-    this.statusMessage = 'Данные успешно добавлены';
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
