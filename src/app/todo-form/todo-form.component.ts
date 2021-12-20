@@ -38,7 +38,7 @@ export class TodoFormComponent {
       this.storageService.saveStorage();
       this.statusMessage = 'Данные успешно обновлены';
     } else {
-      if(localStorage.getItem('store')) {
+      if(localStorage.getItem('store') !== null && this.todoService.todos.length !== 0) {
         this.todoService.todo.id = Number(this.todoService.todos[this.todoService.todos.length - 1].id);
       }
       this.todoService.addTodo(tades);
