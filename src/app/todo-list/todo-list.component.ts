@@ -10,7 +10,6 @@ import * as moment from "moment";
 })
 export class TodoListComponent implements OnInit {
 
-  public filterTodos: string = '';
   statusMessage: string = "";
 
   constructor(private router: Router, public todoService: TodoService, public storageService: StorageService) {}
@@ -24,14 +23,16 @@ export class TodoListComponent implements OnInit {
     this.todoService.checkFailured();
   }
 
-  // filterTodos(filter:string) {
-  //   if(filter = '') {
-  //     return this.todoService.todos;
-  //   }
-  //   return this.todoService.todos.filter(todo => {
-  //     return todo.importance.indexOf(filter) !== -1;
-  //   })
-  // }
+  filterImp(filterTodos:string) {
+    this.storageService.loadStorage();
+    this.todoService.checkCompleted();
+    this.todoService.checkFailured();
+    if (filterTodos) {
+      this.todoService.todos = this.todoService.todos.filter(todo => {
+        return todo.importance === filterTodos;
+      });
+    }
+  }
 
   goTo(todo:any) {
     this.router.navigate(['/item', todo.id]);

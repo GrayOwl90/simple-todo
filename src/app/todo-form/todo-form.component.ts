@@ -35,9 +35,6 @@ export class TodoFormComponent {
       tades.deadlineDate = tades.deadlineDate?.startDate?.startOf('day').unix();
       tades.completedDate = tades.completedDate?.startDate?.startOf('day').unix();
       this.todoService.todos = this.todoService.todos.map((todo) => todo.id == this.tades.id ? this.todoService.todo = this.tades : todo);
-      // console.log('todo', this.todoService.todo);
-      // console.log('tades', this.tades);
-      // console.log('todos', this.todoService.todos);
       this.storageService.saveStorage();
       this.statusMessage = 'Данные успешно обновлены';
     } else {

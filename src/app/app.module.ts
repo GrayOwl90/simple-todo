@@ -7,7 +7,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { TodoFormComponent } from './todo-form/todo-form.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
-import { TodoFilterPipe } from './todo-filter.pipe';
+
 import { NotFoundComponent } from './not-found/not-found.component';
 
 const appRoutes: Routes =[
@@ -22,7 +22,6 @@ const appRoutes: Routes =[
     AppComponent,
     TodoFormComponent,
     TodoListComponent,
-    TodoFilterPipe,
     NotFoundComponent
   ],
   imports: [

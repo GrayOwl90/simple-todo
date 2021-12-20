@@ -1,15 +1,12 @@
 <h3>Список дел</h3>
 
-
-<!--<button class="btn btn-primary" *ngFor="imp of todoService.todo.importance">{{imp}}</button>-->
-
-<button class="btn btn-primary" (click)="filterTodos = ''">Все</button>
+<button class="btn btn-primary" (click)="filterImp('')">Все</button>
 &nbsp;
-<button class="btn btn-primary" (click)="filterTodos = 'usual'">Usual</button>
+<button class="btn btn-primary" (click)="filterImp('usual')">Usual</button>
 &nbsp;
-<button class="btn btn-primary" (click)="filterTodos = 'important'">Important</button>
+<button class="btn btn-primary" (click)="filterImp('important')">Important</button>
 &nbsp;
-<button class="btn btn-primary" (click)="filterTodos = 'veryImportant'">VeryImportant</button>
+<button class="btn btn-primary" (click)="filterImp('veryImportant')">VeryImportant</button>
 <div>&nbsp;</div>
 <table class="table table-striped">
   <thead>
@@ -26,7 +23,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let todo of todoService.todos | todoFilter:filterTodos" [ngClass]="{fail: todo.failured}">
+  <tr *ngFor="let todo of todoService.todos" [ngClass]="{fail: todo.failured}">
     <td><input type="checkbox" class="form-control" name="selected"
                [(ngModel)]="todo.selected"
                (change)="changedSelected()"></td>
